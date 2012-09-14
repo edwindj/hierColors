@@ -14,7 +14,7 @@ divide(2, space=2)
 
 # x should be a data.frame of factors
 recursiveDivide <- function(x, spacing=1){
-  parts <- droplevels(x[[1]])
+  parts <- droplevels(as.factor(x[[1]]))
   x <- x[,-1,drop=FALSE]
   
   n <- nlevels(parts)

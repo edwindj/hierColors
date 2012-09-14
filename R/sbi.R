@@ -59,3 +59,9 @@ for (n in names(s)){
   write.csv(s[[n]], paste0("data/",n,".csv"), row.names=FALSE, na="")
 }
 
+sbi3 <- read.csv("data/SBI3.csv")
+head(sbi3)
+source("R/hiercolor.R")
+rd <- recursiveDivide(sbi3[c("SBI1","SBI2", "SBI3")])
+showHier(rd)
+
