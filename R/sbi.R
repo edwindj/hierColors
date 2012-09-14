@@ -48,7 +48,7 @@ sbi$SBI4 <- SBI4
 
 levs <- paste0("SBI", 1:4)
 SBI.level <- rowSums(!sapply(sbi[levs], is.na))
-SBI.level <- factor(SBI.level, labels=levs)
+SBI.level <- ordered(SBI.level, labels=levs)
 
 sbi$SBI.level <- SBI.level
 write.csv(sbi, "data/sbi_all.csv", row.names=FALSE, na="")
@@ -64,4 +64,29 @@ head(sbi3)
 source("R/hiercolor.R")
 rd <- recursiveDivide(sbi3[c("SBI1","SBI2", "SBI3")])
 showHier(rd)
+
+idx <- 3:6 # indexes of sbi codes
+
+parents <- head(idx, -1)
+children <- tail(idx, -1)
+
+parent <- character(nrow(sbi))
+
+for (i in seq_along(children)){
+  sel <- (as.integer(SBI.level) == i+1)
+  parent[sel] <- sbi[[parents[i]]][sel]
+}
+
+parent <- character(nrow(sbi))
+for (code in levels(SBI.level)){
+  #code="SBI1"
+  parcode <- sbi[[code]]
+  sel <- SBI.level > code & !is.na(parcode)
+  parent[sel] <- parcode[sel]
+}
+parent
+
+sbi$parent <- parent
+sbi$SBI.level <- SBI.level
+head(sbi, 25)
 
