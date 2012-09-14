@@ -80,13 +80,13 @@ for (i in seq_along(children)){
 parent <- character(nrow(sbi))
 for (code in levels(SBI.level)){
   #code="SBI1"
-  parcode <- sbi[[code]]
-  sel <- SBI.level > code & !is.na(parcode)
-  parent[sel] <- parcode[sel]
+  parcode <- as.character(sbi[[code]])
+  print(parcode)
+  sel <- as.character(SBI.level) != code & !is.na(parcode)
+  parent[sel] <- sbi$code[match(parcode[sel], sbi$code)]
 }
 parent
 
 sbi$parent <- parent
 sbi$SBI.level <- SBI.level
 head(sbi, 25)
-
