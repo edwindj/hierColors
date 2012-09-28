@@ -22,10 +22,22 @@ sbi$parentcode <- parentcode
 
 head(sbi)
 
+sbi2 <- sbi[ordered(sbi$SBI.level) <= "SBI2",]
+sbi2.g <- sbi2[c("code", "parentcode", 'labels')]
+sbi2.g <- rbind(sbi2.g, data.frame(code="", parentcode=NA, labels="Total"))
+rd <- recursiveDivide(sbi2[c("SBI1", "SBI2")])
 require(igraph)
-g <- graph.data.frame(sbi[c("code", "parentcode", 'labels')])
+g <- graph.data.frame(sbi2.g)
+g <- g - 109
 
-plot(g, layout=layout.kamada.kawai, vertex.color="green")
+labels <- c(as.character(sbi2$code))
+chroma = 25*nchar(labels)
+
+cols <- c(hcl(360*rd, c=chroma), "white")
+labels <- c(labels, "")
+
+plot(g, layout=layout.fruchterman.reingold, vertex.color=cols, vertex.label=labels)
+tkplot(g, layout=layout.fruchterman.reingold, vertex.color=cols, vertex.label=labels)
 
 
 

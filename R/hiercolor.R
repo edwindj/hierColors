@@ -7,6 +7,7 @@ recursiveDivide <- function(x, spacing=1){
   
   #' map n parts into the cyclic range of [0, 1]
   res <- ((seq_len(n) - 0.5)/n)[parts]
+  res[is.na(res)] <- 0
   
   names(res) <- rownames(x)
   
